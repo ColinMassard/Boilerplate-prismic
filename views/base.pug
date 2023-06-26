@@ -8,9 +8,9 @@ html(class=isDesktop ? "desktop" : isTablet ? "tablet" : isPhone ? "mobile" : ""
 
     base(href="/")
 
-    //- title=meta.data.title 
+    title=meta.data.title 
     
-    //- meta(name="description" content=meta.data.description)
+    meta(name="description" content=meta.data.description)
 
     title Boilerplate
     
@@ -24,25 +24,16 @@ html(class=isDesktop ? "desktop" : isTablet ? "tablet" : isPhone ? "mobile" : ""
     meta(name="msapplication-TileColor" content="#f4d8cc")
     meta(name="theme-color" content="#f4d8cc")
 
-    //- meta(property="og:type" content="website")
-    //- meta(property="og:title" content=meta.data.title)
-    //- meta(property="og:description" content=meta.data.description)
-    //- meta(property="og:image" content=meta.data.image ? meta.data.image.url : '')
-
-    //- meta(name="twitter:card" content="summary_large_image")
-    //- meta(name="twitter:title" content=meta.data.title)
-    //- meta(name="twitter:description" content=meta.data.description)
-    //- meta(name="twitter:image" content=meta.data.image ? meta.data.image.url : '')
-
     meta(property="og:type" content="website")
-    meta(property="og:title" content="Lorem Ipsum")
-    meta(property="og:description" content="Lorem Ipsum")
-    meta(property="og:image" content="Lorem Ipsum")
+    meta(property="og:title" content=meta.data.title)
+    meta(property="og:description" content=meta.data.description)
+    meta(property="og:image" content=meta.data.image ? meta.data.image.url : '')
 
     meta(name="twitter:card" content="summary_large_image")
-    meta(name="twitter:title" content="Lorem Ipsum")
-    meta(name="twitter:description" content="Lorem Ipsum")
-    meta(name="twitter:image" content="Lorem Ipsum")
+    meta(name="twitter:title" content=meta.data.title)
+    meta(name="twitter:description" content=meta.data.description)
+    meta(name="twitter:image" content=meta.data.image ? meta.data.image.url : '')
+
 
     link(href="main.css" rel="stylesheet")
     

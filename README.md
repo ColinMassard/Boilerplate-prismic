@@ -19,6 +19,14 @@ npm install
 npm run start
 ```
 
+Create a .env file and fill it with the prismic data
+```
+PRISMIC_ACCESS_TOKEN=
+PRISMIC_CLIENT_ID=
+PRISMIC_CLIENT_SECRET=
+PRISMIC_ENDPOINT=
+```
+
 ## Usage
 
 Here are the different soding standards :
