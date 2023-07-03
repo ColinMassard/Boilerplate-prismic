@@ -1,21 +1,30 @@
+import NormalizeWheel from 'normalize-wheel'
+
 import each from 'lodash/each'
 
 import Preloader from 'components/Preloader'
 
+import About from 'pages/About'
+import Home from 'pages/Home'
 class App {
   constructor () {
     this.createContent()
 
     this.createPreloader()
+    this.createPages()
 
     this.addEventListeners()
     this.addLinkListeners()
 
+    this.onResize()
     this.update()
   }
 
   createPreloader () {
-    this.preloader = new Preloader()
+    this.preloader = new Preloader({
+      canvas: this.canvas
+    })
+    this.preloader.once('completed', this.onPreloaded.bind(this))
   }
 
   createContent () {
@@ -23,9 +32,27 @@ class App {
     this.template = this.content.getAttribute('data-template')
   }
 
+  createPages () {
+    this.pages = {
+      about: new About(),
+      home: new Home()
+    }
+
+    this.page = this.pages[this.template]
+    this.page.create()
+
+    this.onResize()
+  }
+
   /****
    * EVENTS
    * ***/
+  onPreloaded () {
+    this.onResize()
+
+    this.page.show()
+  }
+
   onPopState () {
     this.onChange({
       url: window.location.pathname,
@@ -63,11 +90,36 @@ class App {
       this.page = this.pages[this.template]
       this.page.create()
 
+      this.onResize()
+
       this.page.show()
 
       this.addLinkListeners()
     } else {
       console.log('Error')
+    }
+  }
+
+  onResize () {
+    if (this.page && this.page.onResize) {
+      this.page.onResize()
+    }
+  }
+
+  onTouchDown (event) {
+  }
+
+  onTouchMove (event) {
+  }
+
+  onTouchUp (event) {
+  }
+
+  onWheel (event) {
+    const normalizedWheel = NormalizeWheel(event)
+
+    if (this.page && this.page.update) {
+      this.page.onWheel(normalizedWheel)
     }
   }
 
@@ -84,6 +136,19 @@ class App {
    * LISTENERS
    * ***/
   addEventListeners () {
+    window.addEventListener('mousewheel', this.onWheel.bind(this))
+
+    window.addEventListener('mousedown', this.onTouchDown.bind(this))
+    window.addEventListener('mousemove', this.onTouchMove.bind(this))
+    window.addEventListener('mouseup', this.onTouchUp.bind(this))
+
+    window.addEventListener('touchstart', this.onTouchDown.bind(this))
+    window.addEventListener('touchmove', this.onTouchMove.bind(this))
+    window.addEventListener('touchend', this.onTouchUp.bind(this))
+
+    window.addEventListener('popstate', this.onPopState.bind(this))
+
+    window.addEventListener('resize', this.onResize.bind(this))
   }
 
   addLinkListeners () {
