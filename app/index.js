@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import NormalizeWheel from 'normalize-wheel'
 
 import each from 'lodash/each'
@@ -95,6 +96,7 @@ class App {
       this.page.show()
 
       this.addLinkListeners()
+      this.createAnimations()
     } else {
       console.log('Error')
     }
@@ -104,6 +106,25 @@ class App {
     if (this.page && this.page.onResize) {
       this.page.onResize()
     }
+  }
+
+  createAnimations () {
+    const element = document.querySelectorAll('[data-animate]')
+    if (element === null) return
+
+    const intersectionObserverScroll = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      {
+        rootMargin: '0px'
+      }
+    )
+    element.forEach(animateElement => intersectionObserverScroll.observe(animateElement))
   }
 
   onTouchDown (event) {
@@ -156,11 +177,20 @@ class App {
 
     each(links, link => {
       link.onclick = event => {
+        if (link.hasAttribute('data-anchor') !== true && link.hasAttribute('target') !== true && link.hasAttribute('data-contact') !== true) {
+          event.preventDefault()
+          const { href } = link
+          this.onChange({ url: href })
+        }
+      }
+    })
+
+    const socialLinks = document.querySelectorAll('p.social-link')
+
+    each(socialLinks, link => {
+      link.onclick = event => {
         event.preventDefault()
-
-        const { href } = link
-
-        this.onChange({ url: href })
+        window.open(link.getAttribute('data-link'), '_blank')
       }
     })
   }

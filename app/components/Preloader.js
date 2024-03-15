@@ -36,9 +36,7 @@ export default class Preloader extends Component {
   }
 
   createLoader () {
-    // TODO: Remove this if img on homepage
     if (this.elements.images[0] === undefined) {
-      console.log('true')
       this.onLoaded()
 
       this.elements.numberText.innerHTML = '100%'
@@ -92,7 +90,31 @@ export default class Preloader extends Component {
       this.animateOut.call(_ => {
         this.emit('completed')
       })
+
+      setTimeout(() => {
+        this.createAnimations()
+      }, 3000)
     })
+  }
+
+  createAnimations () {
+    const element = document.querySelectorAll('[data-animate]')
+    if (element === null) return
+
+    // eslint-disable-next-line no-undef
+    const intersectionObserverScroll = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      {
+        rootMargin: '0px'
+      }
+    )
+    element.forEach(animateElement => intersectionObserverScroll.observe(animateElement))
   }
 
   destroy () {
